@@ -2,12 +2,16 @@
 </script>
 
 <template>
-  <router-link to="/money">记账</router-link>
-  |
-  <router-link to="/label">标签</router-link>
-  |
-  <router-link to="/statistics">统计</router-link>
+  <div class="nav">
+    <router-link to="/money">记账</router-link>
+    <router-link to="/label">标签</router-link>
+    <router-link to="/statistics">统计</router-link>
+  </div>
 </template>
 
 <style lang="scss" scoped>
+.nav {
+  border: 1px solid yellow;
+  display: flex;
+}
 </style>
