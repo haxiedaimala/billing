@@ -1,30 +1,18 @@
 <script setup lang="ts">
-let importAll = (requireContent: __WebpackModuleApi.RequireContext) => requireContent.keys().forEach(requireContent);
-try {
-  importAll(require.context('../assets/icons', true, /\.svg$/));
-} catch (error) {
-  console.log(error);
-}
 </script>
 
 <template>
   <div class="nav">
     <router-link to="/money">
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#money"></use>
-      </svg>
+      <Icon name="money"/>
       记账
     </router-link>
     <router-link to="/label">
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#label"></use>
-      </svg>
+      <Icon name="label"/>
       标签
     </router-link>
     <router-link to="/statistics">
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#statistics"></use>
-      </svg>
+      <Icon name="statistics"/>
       统计
     </router-link>
   </div>
