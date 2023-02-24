@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import x from '@/assets/icons/money.svg';
-import y from '@/assets/icons/label.svg';
-import z from '@/assets/icons/statistics.svg';
-
-console.log(x);
-console.log(y);
-console.log(z);
+let importAll = (requireContent: __WebpackModuleApi.RequireContext) => requireContent.keys().forEach(requireContent);
+try {
+  importAll(require.context('../assets/icons', true, /\.svg$/));
+} catch (error) {
+  console.log(error);
+}
 </script>
 
 <template>
