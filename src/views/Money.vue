@@ -5,14 +5,14 @@ import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import {ref} from 'vue';
 
-const type = ref('+');
+const type = ref('-');
 </script>
 
 <template>
   <Layout>
     <Tags/>
     <Notes/>
-    <Types v-model:type="type"/>
+    <Types v-model="type"/>
     <NumberPad/>
   </Layout>
 </template>

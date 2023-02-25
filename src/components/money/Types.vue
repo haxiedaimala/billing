@@ -1,25 +1,28 @@
 <script setup lang="ts">
 defineProps({
-  type: {
+  modelValue: {
     type: String,
-    default: '-'
+    default: '-',
+    validator: (value: string) => {
+      return ['-', '+'].indexOf(value) >= 0;
+    }
   }
 });
 const emits = defineEmits<{
-  (e: 'update:type', value: string): void
+  (e: 'update:modelValue', value: string): void
 }>();
 const toggle = (value: string) => {
   if (value !== '-' && value !== '+') {
     throw new Error('type is unknown');
   }
-  emits('update:type', value);
+  emits('update:modelValue', value);
 };
 </script>
 
 <template>
   <ul class="types">
-    <li :class="{selected:type==='-'}" @click="toggle('-')">支出</li>
-    <li :class="{selected:type==='+'}" @click="toggle('+')">收入</li>
+    <li :class="{selected:modelValue==='-'}" @click="toggle('-')">支出</li>
+    <li :class="{selected:modelValue==='+'}" @click="toggle('+')">收入</li>
   </ul>
 </template>
 
