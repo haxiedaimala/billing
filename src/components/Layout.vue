@@ -13,14 +13,12 @@ import Nav from '@/components/Nav.vue';
 
 <style lang="scss" scoped>
 .nav-wrapper {
-  border: 1px solid red;
   height: 100vh;
   display: flex;
   flex-direction: column;
 
   .content {
     flex-grow: 1;
-    border: 2px solid blue;
     overflow: auto;
   }
 }

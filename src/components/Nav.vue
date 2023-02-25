@@ -2,25 +2,40 @@
 </script>
 
 <template>
-  <div class="nav">
-    <router-link to="/money">
+  <nav class="nav">
+    <router-link to="/money" class="item">
       <Icon name="money"/>
       记账
     </router-link>
-    <router-link to="/label">
+    <router-link to="/label" class="item">
       <Icon name="label"/>
       标签
     </router-link>
-    <router-link to="/statistics">
+    <router-link to="/statistics" class="item">
       <Icon name="statistics"/>
       统计
     </router-link>
-  </div>
+  </nav>
 </template>
 
 <style lang="scss" scoped>
 .nav {
-  border: 1px solid yellow;
   display: flex;
+  box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+  font-size: 16px;
+
+  > .item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: .25em 0;
+
+    > .icon {
+      width: 1.5em;
+      height: 1.5em;
+    }
+  }
 }
 </style>
