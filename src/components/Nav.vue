@@ -3,15 +3,15 @@
 
 <template>
   <nav class="nav">
-    <router-link to="/money" class="item">
+    <router-link to="/money" class="item" active-class="selected">
       <Icon name="money"/>
       记账
     </router-link>
-    <router-link to="/label" class="item">
+    <router-link to="/label" class="item" active-class="selected">
       <Icon name="label"/>
       标签
     </router-link>
-    <router-link to="/statistics" class="item">
+    <router-link to="/statistics" class="item" active-class="selected">
       <Icon name="statistics"/>
       统计
     </router-link>
@@ -31,6 +31,10 @@
     align-items: center;
     flex-direction: column;
     padding: .25em 0;
+
+    &.selected {
+      color: red;
+    }
 
     > .icon {
       width: 1.5em;
