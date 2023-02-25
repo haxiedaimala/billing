@@ -45,4 +45,38 @@
 </template>
 
 <style lang="scss" scoped>
+$h: 24px;
+$border-radius: $h/2;
+.tags {
+  font-size: 14px;
+  padding: 16px;
+
+  > .current {
+    display: flex;
+
+    > li {
+      background: #d9d9d9;
+      height: $h;
+      border-radius: $border-radius;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 12px;
+    }
+  }
+
+  > .new {
+    padding-top: 16px;
+
+    > button {
+      background: transparent;
+      border: none;
+      color: #999;
+      border-bottom: 1px solid;
+      padding: 0 4px;
+    }
+  }
+
+}
 </style>
