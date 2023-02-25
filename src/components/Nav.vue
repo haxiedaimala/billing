@@ -23,7 +23,7 @@
 
 .nav {
   display: flex;
-  box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+  @extend %outerShadow;
   font-size: 16px;
 
   > .item {
