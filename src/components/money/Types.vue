@@ -1,10 +1,25 @@
 <script setup lang="ts">
+defineProps({
+  type: {
+    type: String,
+    default: '-'
+  }
+});
+const emits = defineEmits<{
+  (e: 'update:type', value: string): void
+}>();
+const toggle = (value: string) => {
+  if (value !== '-' && value !== '+') {
+    throw new Error('type is unknown');
+  }
+  emits('update:type', value);
+};
 </script>
 
 <template>
   <ul class="types">
-    <li class="selected">支出</li>
-    <li>收入</li>
+    <li :class="{selected:type==='-'}" @click="toggle('-')">支出</li>
+    <li :class="{selected:type==='+'}" @click="toggle('+')">收入</li>
   </ul>
 </template>
 
