@@ -50,12 +50,25 @@
 $h: 24px;
 $border-radius: $h/2;
 $color-button-bg: #f2f2f2;
+
+:deep(.content) {
+  display: flex;
+  flex-direction: column;
+}
+
 .tags {
   font-size: 14px;
   padding: 16px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow: hidden;
 
   > .current {
     display: flex;
+    flex: 1;
+    flex-wrap: wrap-reverse;
+    overflow: auto;
 
     > li {
       background: #d9d9d9;
@@ -65,7 +78,7 @@ $color-button-bg: #f2f2f2;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 12px;
+      margin: 4px 12px 0 0;
       cursor: pointer;
     }
   }

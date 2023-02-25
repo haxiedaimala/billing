@@ -3,7 +3,7 @@ import Nav from '@/components/Nav.vue';
 </script>
 
 <template>
-  <div class="nav-wrapper">
+  <div class="layout-wrapper">
     <div class="content">
       <slot/>
     </div>
@@ -12,7 +12,7 @@ import Nav from '@/components/Nav.vue';
 </template>
 
 <style lang="scss" scoped>
-.nav-wrapper {
+.layout-wrapper {
   height: 100vh;
   display: flex;
   flex-direction: column;
