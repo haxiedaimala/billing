@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import {computed, PropType, reactive} from 'vue';
+import {PropType, reactive} from 'vue';
 
 interface Props {
   tags: string[];
 }
 
 const props = defineProps({
-  dataSource: {
+  modelValue: {
     type: Object as PropType<Props>,
     default: () => {
       return ['衣', '食', '住', '行'];
@@ -14,7 +14,7 @@ const props = defineProps({
   }
 });
 const emits = defineEmits<{
-  (e: 'update:dataSource', value: string[]): void
+  (e: 'update:modelValue', value: string[]): void
 }>();
 const currentTags: string[] = reactive([]);
 const toggle = (value: string) => {
@@ -26,24 +26,21 @@ const toggle = (value: string) => {
   }
 };
 const create = () => {
-  const tagName: string | null = window.prompt('请输入标签名：');
+  const tagName: string = window.prompt('请输入标签名：')!;
   if (tagName === '') {
     window.alert('标签名不能为空');
     return;
   }
-  const reslut = computed(() => {
-    return JSON.parse(JSON.stringify(props.dataSource));
-  });
-  reslut.value.push(tagName);
-  emits('update:dataSource', reslut.value);
+  let resluts: string[] = Object.assign([], props.modelValue);
+  resluts.push(tagName);
+  emits('update:modelValue', resluts);
 };
 </script>
 
 <template>
   <div class="tags">
-    {{ currentTags }}
     <ul class="current">
-      <li v-for="tag in dataSource"
+      <li v-for="tag in modelValue"
           :key="tag"
           @click="toggle(tag)"
           :class="{selected:currentTags.indexOf(tag)>=0}"

@@ -14,7 +14,7 @@ console.log(dataSource);
 
 <template>
   <Layout>
-    <Tags v-model:dataSource="dataSource"/>
+    <Tags v-model="dataSource"/>
     <Notes v-model="note"/>
     <Types v-model="type"/>
     <NumberPad v-model="output"/>
