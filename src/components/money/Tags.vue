@@ -1,13 +1,40 @@
 <script setup lang="ts">
+import {PropType, reactive} from 'vue';
+
+interface Props {
+  tags: string[];
+}
+
+defineProps({
+  dataSource: {
+    type: Object as PropType<Props>,
+    default: () => {
+      return ['衣', '食', '住', '行'];
+    }
+  }
+});
+const currentTags: string[] = reactive([]);
+const toggle = (value: string) => {
+  const index: number = currentTags.indexOf(value);
+  if (index >= 0) {
+    currentTags.splice(index, 1);
+  } else {
+    currentTags.push(value);
+  }
+};
 </script>
 
 <template>
   <div class="tags">
+    {{ currentTags }}
     <ul class="current">
-      <li>衣</li>
-      <li>食</li>
-      <li>住</li>
-      <li>行</li>
+      <li v-for="tag in dataSource"
+          :key="tag"
+          @click="toggle(tag)"
+          :class="{selected:currentTags.indexOf(tag)>=0}"
+      >
+        {{ tag }}
+      </li>
     </ul>
     <div class="new">
       <button>新增标签</button>
@@ -18,7 +45,7 @@
 <style lang="scss" scoped>
 $h: 24px;
 $border-radius: $h/2;
-
+$color-bg: #d9d9d9;
 .tags {
   font-size: 14px;
   padding: 16px;
@@ -34,7 +61,7 @@ $border-radius: $h/2;
     overflow: auto;
 
     > li {
-      background: #d9d9d9;
+      background: $color-bg;
       height: $h;
       border-radius: $border-radius;
       padding: 0 16px;
@@ -43,6 +70,11 @@ $border-radius: $h/2;
       justify-content: center;
       margin: 4px 12px 0 0;
       cursor: pointer;
+
+      &.selected {
+        background: darken($color-bg, 30%);
+        color: #fff;
+      }
     }
   }
 
