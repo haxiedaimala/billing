@@ -11,26 +11,32 @@ const props = defineProps({
     default: () => {
       return ['衣', '食', '住', '行'];
     }
+  },
+  selectTags: {
+    type: Object as PropType<Props>,
+    default: () => {
+      return [''];
+    }
   }
 });
 const emits = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void
+  (e: 'update:modelValue', value: string[]): void,
+  (e: 'update:selectTags', value: string[]): void
 }>();
-const currentTags: string[] = reactive([]);
+
 const toggle = (value: string) => {
+  const currentTags = reactive(JSON.parse(JSON.stringify(props.selectTags)));
   const index: number = currentTags.indexOf(value);
   if (index >= 0) {
     currentTags.splice(index, 1);
   } else {
     currentTags.push(value);
   }
+  emits('update:selectTags', currentTags);
 };
 const create = () => {
   const tagName: string = window.prompt('请输入标签名：')!;
-  if (tagName === '') {
-    window.alert('标签名不能为空');
-    return;
-  }
+  if (tagName === '') return window.alert('标签名不能为空');
   let resluts: string[] = Object.assign([], props.modelValue);
   resluts.push(tagName);
   emits('update:modelValue', resluts);
@@ -43,7 +49,7 @@ const create = () => {
       <li v-for="tag in modelValue"
           :key="tag"
           @click="toggle(tag)"
-          :class="{selected:currentTags.indexOf(tag)>=0}"
+          :class="{selected:selectTags.indexOf(tag)>=0}"
       >
         {{ tag }}
       </li>
