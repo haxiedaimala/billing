@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import {PropType, reactive} from 'vue';
+import {computed, PropType, reactive} from 'vue';
 
 interface Props {
   tags: string[];
 }
 
-defineProps({
+const props = defineProps({
   dataSource: {
     type: Object as PropType<Props>,
     default: () => {
@@ -13,6 +13,9 @@ defineProps({
     }
   }
 });
+const emits = defineEmits<{
+  (e: 'update:dataSource', value: string[]): void
+}>();
 const currentTags: string[] = reactive([]);
 const toggle = (value: string) => {
   const index: number = currentTags.indexOf(value);
@@ -21,6 +24,18 @@ const toggle = (value: string) => {
   } else {
     currentTags.push(value);
   }
+};
+const create = () => {
+  const tagName: string | null = window.prompt('请输入标签名：');
+  if (tagName === '') {
+    window.alert('标签名不能为空');
+    return;
+  }
+  const reslut = computed(() => {
+    return JSON.parse(JSON.stringify(props.dataSource));
+  });
+  reslut.value.push(tagName);
+  emits('update:dataSource', reslut.value);
 };
 </script>
 
@@ -37,7 +52,7 @@ const toggle = (value: string) => {
       </li>
     </ul>
     <div class="new">
-      <button>新增标签</button>
+      <button @click="create">新增标签</button>
     </div>
   </div>
 </template>

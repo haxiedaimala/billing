@@ -8,12 +8,13 @@ import {ref} from 'vue';
 const type = ref('-');
 const output = ref('1000');
 const note = ref('');
-const dataSource = ['衣', '食', '住', '行', '其他'];
+const dataSource = ref(['衣', '食', '住', '行', '其他']);
+console.log(dataSource);
 </script>
 
 <template>
   <Layout>
-    <Tags :data-source="dataSource"/>
+    <Tags v-model:dataSource="dataSource"/>
     <Notes v-model="note"/>
     <Types v-model="type"/>
     <NumberPad v-model="output"/>
