@@ -5,6 +5,8 @@ interface Props {
 
 interface Emits {
   (e: 'update:modelValue', value: string): void;
+
+  (e: 'submit', value: string): void;
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -20,7 +22,8 @@ const remove = () => {
   emits('update:modelValue', reslut);
 };
 const ok = () => {
-  return;
+  if (props.modelValue === '0') return window.alert('提交金额不能为0');
+  emits('submit', props.modelValue);
 };
 const inputContent = (event: MouseEvent) => {
   const input = (event.target as HTMLButtonElement).innerText;
