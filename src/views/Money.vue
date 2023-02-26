@@ -6,6 +6,7 @@ import NumberPad from '@/components/money/NumberPad.vue';
 import {ref} from 'vue';
 
 const type = ref('-');
+const output = ref('1000');
 </script>
 
 <template>
@@ -13,7 +14,7 @@ const type = ref('-');
     <Tags/>
     <Notes/>
     <Types v-model="type"/>
-    <NumberPad/>
+    <NumberPad v-model="output"/>
   </Layout>
 </template>
 
