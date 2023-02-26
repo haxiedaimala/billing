@@ -7,12 +7,13 @@ import {ref} from 'vue';
 
 const type = ref('-');
 const output = ref('1000');
+const note = ref('');
 </script>
 
 <template>
   <Layout>
     <Tags/>
-    <Notes/>
+    <Notes v-model="note"/>
     <Types v-model="type"/>
     <NumberPad v-model="output"/>
   </Layout>
