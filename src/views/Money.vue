@@ -3,7 +3,7 @@ import Tags from '@/components/money/Tags.vue';
 import Notes from '@/components/money/Notes.vue';
 import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
-import model from '@/model';
+import recordListModel from '@/model/recordListModel';
 import {computed, ref} from 'vue';
 
 const type = ref('-');
@@ -20,10 +20,10 @@ const record = computed<RecordItem>(() => {
     createAt: new Date()
   };
 });
-const recordList = model.fetch();
+const recordList = recordListModel.fetch();
 const onSaveRecord = () => {
   recordList.value.push(record.value);
-  model.save(recordList.value);
+  recordListModel.save(recordList.value);
   type.value = '-';
   output.value = '0';
   note.value = '';
