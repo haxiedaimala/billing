@@ -4,7 +4,7 @@ const dataSource = ['衣', '食', '住', '行'];
 interface TagListModel {
   data: string[],
   fetch: () => string[];
-  create: (data: string) => string[];
+  create: (data: string) => 'duplicated' | string[];
   save: (data: string[]) => void;
 }
 
@@ -15,6 +15,9 @@ const tagListModel: TagListModel = {
     return this.data;
   },
   create(tagName: string) {
+    if (this.data.indexOf(tagName) >= 0) {
+      return 'duplicated';
+    }
     const newTagList = JSON.parse(JSON.stringify(this.data));
     newTagList.push(tagName);
     this.data = newTagList;

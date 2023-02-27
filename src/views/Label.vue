@@ -7,10 +7,16 @@ const tagList = ref(tagListModel.data);
 
 const create = () => {
   const tagName: string = window.prompt('请输入标签名：')!;
-  if (tagName === '' || tagName === null) return window.alert('标签名不能为空');
-  tagList.value = tagListModel.create(tagName);
-  tagListModel.save(tagList.value);
-  window.alert('创建成功');
+  if (!tagName) return window.alert('标签名不能为空');
+  const message = tagListModel.create(tagName);
+  if (message === 'duplicated') {
+    window.alert('标签名重复，添加失败');
+  } else {
+    tagList.value = message as string[];
+    tagListModel.save(tagList.value);
+    window.alert('创建成功');
+  }
+
 };
 </script>
 
