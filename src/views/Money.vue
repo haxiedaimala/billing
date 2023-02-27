@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Tags from '@/components/money/Tags.vue';
-import Notes from '@/components/money/Notes.vue';
+import FormItem from '@/components/money/FormItem.vue';
 import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import recordListModel from '@/model/recordListModel';
@@ -43,7 +43,7 @@ const onSaveRecord = () => {
 <template>
   <Layout>
     <Tags v-model="dataSource" v-model:selectTags="selectTags"/>
-    <Notes field-name="备注" placeholder="请输入备注" v-model="note"/>
+    <FormItem field-name="备注" placeholder="请输入备注" v-model="note"/>
     <Types v-model="type"/>
     <NumberPad v-model="output" @submit="onSaveRecord"/>
   </Layout>

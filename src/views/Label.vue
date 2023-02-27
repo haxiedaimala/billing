@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Button from '@/components/Button.vue';
 import tagListModel from '@/model/tagListModel';
 import {ref} from 'vue';
 
@@ -29,7 +30,7 @@ const create = () => {
       </router-link>
     </div>
     <div class="createTag-wrapper">
-      <button class="createTag" @click="create">新建标签</button>
+      <Button @click="create">新建标签</Button>
     </div>
     <router-view/>
   </Layout>
@@ -58,21 +59,10 @@ const create = () => {
   }
 }
 
-.createTag {
-  background: #767676;
-  color: #fff;
-  border-radius: 4px;
-  border: none;
+.createTag-wrapper {
   display: flex;
-  align-items: center;
-  padding: 0.6em 1em;
-  cursor: pointer;
-
-  &-wrapper {
-    display: flex;
-    justify-content: center;
-    padding: 16px;
-    margin-top: 44-16px;
-  }
+  justify-content: center;
+  padding: 16px;
+  margin-top: 44-16px;
 }
 </style>
