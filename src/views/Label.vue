@@ -22,12 +22,12 @@ const create = () => {
 
 <template>
   <Layout>
-    <ol class="tags">
-      <li v-for="tag of tagList" :key="tag.id">
+    <div class="tags">
+      <router-link :to="`/label/edit/${tag.id}`" class="tag" v-for="tag of tagList" :key="tag.id">
         <span>{{ tag.name }}</span>
         <Icon name="right"/>
-      </li>
-    </ol>
+      </router-link>
+    </div>
     <div class="createTag-wrapper">
       <button class="createTag" @click="create">新建标签</button>
     </div>
@@ -41,7 +41,7 @@ const create = () => {
   font-size: 16px;
   padding-left: 1em;
 
-  > li {
+  > .tag {
     min-height: 3em;
     display: flex;
     align-items: center;
