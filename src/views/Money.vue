@@ -4,12 +4,15 @@ import Notes from '@/components/money/Notes.vue';
 import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import recordListModel from '@/model/recordListModel';
-import {computed, ref} from 'vue';
+import tagListModel from '@/model/tagListModel';
+import {computed, ref, watchPostEffect} from 'vue';
+
+const dataSource = ref(tagListModel.fetch());
+const recordList = recordListModel.fetch();
 
 const type = ref('-');
 const output = ref('0');
 const note = ref('');
-const dataSource = ref(['衣', '食', '住', '行', '其他']);
 const selectTags = ref<string[]>([]);
 const record = computed<RecordItem>(() => {
   return {
@@ -20,14 +23,19 @@ const record = computed<RecordItem>(() => {
     createAt: new Date()
   };
 });
-const recordList = recordListModel.fetch();
-const onSaveRecord = () => {
-  recordList.value.push(record.value);
-  recordListModel.save(recordList.value);
+watchPostEffect(() => {
+  tagListModel.save(dataSource.value);
+});
+const clearRecord = () => {
   type.value = '-';
   output.value = '0';
   note.value = '';
   selectTags.value = [];
+};
+const onSaveRecord = () => {
+  recordList.value.push(record.value);
+  recordListModel.save(recordList.value);
+  clearRecord();
   window.alert('保存成功');
 };
 </script>
