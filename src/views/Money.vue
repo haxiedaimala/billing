@@ -5,11 +5,11 @@ import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import recordListModel from '@/model/recordListModel';
 import tagListModel from '@/model/tagListModel';
-import {computed, ref, watchPostEffect} from 'vue';
+import {computed, ref, watch} from 'vue';
 
-const dataSource = ref(tagListModel.fetch());
+tagListModel.fetch();
+const dataSource = ref(tagListModel.data);
 const recordList = recordListModel.fetch();
-
 const type = ref('-');
 const output = ref('0');
 const note = ref('');
@@ -23,7 +23,7 @@ const record = computed<RecordItem>(() => {
     createAt: new Date()
   };
 });
-watchPostEffect(() => {
+watch(dataSource, () => {
   tagListModel.save(dataSource.value);
 });
 const clearRecord = () => {

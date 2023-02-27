@@ -36,7 +36,7 @@ const toggle = (value: string) => {
 };
 const create = () => {
   const tagName: string = window.prompt('请输入标签名：')!;
-  if (tagName === '') return window.alert('标签名不能为空');
+  if (tagName === '' || tagName === null) return window.alert('标签名不能为空');
   let resluts: string[] = Object.assign([], props.modelValue);
   resluts.push(tagName);
   emits('update:modelValue', resluts);

@@ -2,13 +2,14 @@
 import tagListModel from '@/model/tagListModel';
 import {ref} from 'vue';
 
-const tagList = ref(tagListModel.fetch());
+tagListModel.fetch();
+const tagList = ref(tagListModel.data);
+
 const create = () => {
   const tagName: string = window.prompt('请输入标签名：')!;
-  if (tagName === '') return window.alert('标签名不能为空');
-  let newTagList = JSON.parse(JSON.stringify(tagList.value));
-  newTagList.push(tagName);
-  tagListModel.save(newTagList);
+  if (tagName === '' || tagName === null) return window.alert('标签名不能为空');
+  tagList.value = tagListModel.create(tagName);
+  tagListModel.save(tagList.value);
   window.alert('创建成功');
 };
 </script>
