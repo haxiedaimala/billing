@@ -30,6 +30,7 @@ module.exports = {
   ],
   'globals': {
     '__WebpackModuleApi': 'writable',
-    'RecordItem': true
+    'RecordItem': true,
+    'Tag': true
   }
 }

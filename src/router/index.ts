@@ -4,6 +4,7 @@ import Money from '@/views/Money.vue';
 const Label = () => import('@/views/Label.vue');
 const Statistics = () => import('@/views/Statistics.vue');
 const NotFound = () => import('@/views/NotFound.vue');
+const EditLabel = () => import('@/views/EditLabel.vue');
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -15,7 +16,11 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/label',
-    component: Label
+    component: Label,
+  },
+  {
+    path: '/label/edit/:id',
+    component: EditLabel
   },
   {
     path: '/statistics',

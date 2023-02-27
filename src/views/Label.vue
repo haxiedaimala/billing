@@ -12,7 +12,7 @@ const create = () => {
   if (message === 'duplicated') {
     window.alert('标签名重复，添加失败');
   } else {
-    tagList.value = message as string[];
+    tagList.value = message as Tag[];
     tagListModel.save(tagList.value);
     window.alert('创建成功');
   }
@@ -23,14 +23,15 @@ const create = () => {
 <template>
   <Layout>
     <ol class="tags">
-      <li v-for="(tag,index) of tagList" :key="index">
-        <span>{{ tag }}</span>
+      <li v-for="tag of tagList" :key="tag.id">
+        <span>{{ tag.name }}</span>
         <Icon name="right"/>
       </li>
     </ol>
     <div class="createTag-wrapper">
       <button class="createTag" @click="create">新建标签</button>
     </div>
+    <router-view/>
   </Layout>
 </template>
 

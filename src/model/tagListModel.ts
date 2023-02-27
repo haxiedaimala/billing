@@ -1,12 +1,21 @@
 const localStorageKeyName = 'tagList';
-const dataSource = ['衣', '食', '住', '行'];
-
-interface TagListModel {
-  data: string[],
-  fetch: () => string[];
-  create: (data: string) => 'duplicated' | string[];
-  save: (data: string[]) => void;
-}
+const dataSource = [
+  {
+    id: '衣',
+    name: '衣',
+  },
+  {
+    id: '食',
+    name: '食',
+  },
+  {
+    id: '住',
+    name: '住'
+  },
+  {
+    id: '行', name: '行'
+  }
+];
 
 const tagListModel: TagListModel = {
   data: [],
@@ -15,15 +24,16 @@ const tagListModel: TagListModel = {
     return this.data;
   },
   create(tagName: string) {
-    if (this.data.indexOf(tagName) >= 0) {
+    const names = this.data.map(tag => tag.name);
+    if (names.indexOf(tagName) >= 0) {
       return 'duplicated';
     }
-    const newTagList = JSON.parse(JSON.stringify(this.data));
-    newTagList.push(tagName);
+    const newTagList: Tag[] = JSON.parse(JSON.stringify(this.data));
+    newTagList.push({id: tagName, name: tagName});
     this.data = newTagList;
     return this.data;
   },
-  save(data: string[]) {
+  save(data: Tag[]) {
     localStorage.setItem(localStorageKeyName, JSON.stringify(data));
   }
 };

@@ -20,7 +20,7 @@ const props = defineProps({
   }
 });
 const emits = defineEmits<{
-  (e: 'update:modelValue', value: string[]): void,
+  (e: 'update:modelValue', value: Tag[]): void,
   (e: 'update:selectTags', value: string[]): void
 }>();
 
@@ -37,8 +37,8 @@ const toggle = (value: string) => {
 const create = () => {
   const tagName: string = window.prompt('请输入标签名：')!;
   if (!tagName) return window.alert('标签名不能为空');
-  let resluts: string[] = Object.assign([], props.modelValue);
-  resluts.push(tagName);
+  let resluts: Tag[] = Object.assign([], props.modelValue);
+  resluts.push({id: tagName, name: tagName});
   emits('update:modelValue', resluts);
 };
 </script>
@@ -47,11 +47,11 @@ const create = () => {
   <div class="tags">
     <ul class="current">
       <li v-for="tag in modelValue"
-          :key="tag"
-          @click="toggle(tag)"
-          :class="{selected:selectTags.indexOf(tag)>=0}"
+          :key="tag.id"
+          @click="toggle(tag.name)"
+          :class="{selected:selectTags.indexOf(tag.name)>=0}"
       >
-        {{ tag }}
+        {{ tag.name }}
       </li>
     </ul>
     <div class="new">
