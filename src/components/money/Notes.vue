@@ -3,6 +3,13 @@ defineProps({
   modelValue: {
     type: String,
     default: ''
+  },
+  fieldName: {
+    type: String,
+    required: true
+  },
+  placeholder: {
+    type: String
   }
 });
 const emits = defineEmits<{
@@ -15,8 +22,8 @@ const changNote = (event: Event) => {
 
 <template>
   <label class="notes">
-    <span class="name">备注</span>
-    <input type="text" placeholder="在这里添加备注" :value="modelValue" @input="changNote">
+    <span class="name">{{ fieldName }}</span>
+    <input type="text" :placeholder="placeholder" :value="modelValue" @input="changNote">
   </label>
 </template>
 

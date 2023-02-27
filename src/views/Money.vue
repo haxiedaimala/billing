@@ -43,7 +43,7 @@ const onSaveRecord = () => {
 <template>
   <Layout>
     <Tags v-model="dataSource" v-model:selectTags="selectTags"/>
-    <Notes v-model="note"/>
+    <Notes field-name="备注" placeholder="请输入备注" v-model="note"/>
     <Types v-model="type"/>
     <NumberPad v-model="output" @submit="onSaveRecord"/>
   </Layout>
