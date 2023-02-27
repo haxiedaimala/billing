@@ -1,28 +1,28 @@
 <script setup lang="ts">
+import tagListModel from '@/model/tagListModel';
+import {ref} from 'vue';
+
+const tagList = ref(tagListModel.fetch());
+const create = () => {
+  const tagName: string = window.prompt('请输入标签名：')!;
+  if (tagName === '') return window.alert('标签名不能为空');
+  let newTagList = JSON.parse(JSON.stringify(tagList.value));
+  newTagList.push(tagName);
+  tagListModel.save(newTagList);
+  window.alert('创建成功');
+};
 </script>
 
 <template>
   <Layout>
     <ol class="tags">
-      <li>
-        <span>衣</span>
-        <Icon name="right"/>
-      </li>
-      <li>
-        <span>食</span>
-        <Icon name="right"/>
-      </li>
-      <li>
-        <span>住</span>
-        <Icon name="right"/>
-      </li>
-      <li>
-        <span>行</span>
+      <li v-for="(tag,index) of tagList" :key="index">
+        <span>{{ tag }}</span>
         <Icon name="right"/>
       </li>
     </ol>
     <div class="createTag-wrapper">
-      <button class="createTag">新建标签</button>
+      <button class="createTag" @click="create">新建标签</button>
     </div>
   </Layout>
 </template>
