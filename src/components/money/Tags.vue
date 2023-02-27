@@ -65,6 +65,7 @@ $h: 24px;
 $border-radius: $h/2;
 $color-bg: #d9d9d9;
 .tags {
+  background: #fff;
   font-size: 14px;
   padding: 16px;
   display: flex;

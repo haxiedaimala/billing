@@ -21,16 +21,15 @@ const changNote = (event: Event) => {
 </script>
 
 <template>
-  <label class="notes">
+  <label class="formItem">
     <span class="name">{{ fieldName }}</span>
     <input type="text" :placeholder="placeholder" :value="modelValue" @input="changNote">
   </label>
 </template>
 
 <style lang="scss" scoped>
-.notes {
+.formItem {
   font-size: 14px;
-  background: #f5f5f5;
   display: flex;
   align-items: center;
 
