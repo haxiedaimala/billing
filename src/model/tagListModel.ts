@@ -33,6 +33,17 @@ const tagListModel: TagListModel = {
     this.data = newTagList;
     return this.data;
   },
+  update(id: string, name: string) {
+    const idList = this.data.map(tag => tag.id);
+    if (idList.indexOf(id) >= 0) {
+      const tags = this.data.filter(tag => tag.id === id)[0];
+      tags.name = name;
+      this.save(this.data);
+      return 'success';
+    } else {
+      return 'not found';
+    }
+  },
   save(data: Tag[]) {
     localStorage.setItem(localStorageKeyName, JSON.stringify(data));
   }

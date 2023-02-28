@@ -3,7 +3,7 @@ import {useRoute, useRouter} from 'vue-router';
 import tagListModel from '@/model/tagListModel';
 import FormItem from '@/components/money/FormItem.vue';
 import Button from '@/components/Button.vue';
-import {ref} from 'vue';
+import {ref, watch} from 'vue';
 
 tagListModel.fetch();
 const data = ref(tagListModel.data);
@@ -13,16 +13,21 @@ if (tag) {
 } else {
   useRouter().replace('/404');
 }
+watch(tag, () => {
+  tagListModel.update(tag.id, tag.name);
+});
 </script>
 
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left" />
+      <Icon class="leftIcon" name="left"/>
       <span class="title">编辑标签</span>
     </div>
     <div class="form-wrapper">
-      <FormItem :model-value="tag.name" field-name="标签名"/>
+      <FormItem v-model="tag.name"
+                field-name="标签名"
+      />
     </div>
     <div class="button-wrapper">
       <Button>删除标签</Button>
