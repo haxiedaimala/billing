@@ -16,5 +16,6 @@ interface TagListModel {
   fetch: () => Tag[];
   create: (data: string) => 'duplicated' | Tag[];
   update: (id: string, name: string) => 'duplicated' | 'success' | 'not found',
+  remove: (id: string) => boolean,
   save: (data: Tag[]) => void;
 }

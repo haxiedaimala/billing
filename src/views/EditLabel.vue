@@ -6,22 +6,34 @@ import Button from '@/components/Button.vue';
 import {ref, watch} from 'vue';
 
 tagListModel.fetch();
+const router = useRouter();
+const route = useRoute();
 const data = ref(tagListModel.data);
-const tag = data.value.filter(tag => tag.id === useRoute().params.id)[0];
-if (tag) {
-  console.log(tag);
-} else {
-  useRouter().replace('/404');
+const tag = data.value.filter(tag => tag.id === route.params.id)[0];
+if (!tag) {
+  router.replace('/404');
 }
 watch(tag, () => {
   tagListModel.update(tag.id, tag.name);
 });
+const remove = () => {
+  const isSuccess = tagListModel.remove(tag.id);
+  if (isSuccess) {
+    window.alert('删除成功');
+    goBack();
+  } else {
+    window.alert('删除失败');
+  }
+};
+const goBack = () => {
+  router.back();
+};
 </script>
 
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left"/>
+      <Icon class="leftIcon" name="left" @click="goBack"/>
       <span class="title">编辑标签</span>
     </div>
     <div class="form-wrapper">
@@ -30,7 +42,7 @@ watch(tag, () => {
       />
     </div>
     <div class="button-wrapper">
-      <Button>删除标签</Button>
+      <Button @click="remove">删除标签</Button>
     </div>
   </Layout>
 </template>

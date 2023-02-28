@@ -44,6 +44,18 @@ const tagListModel: TagListModel = {
       return 'not found';
     }
   },
+  remove(id: string) {
+    const tag = this.data.filter(tag => tag.id === id)[0];
+    const index = this.data.indexOf(tag);
+    if (index === -1) {
+      return false;
+    } else {
+      this.data.splice(index, 1);
+      this.save(this.data);
+      return true;
+    }
+
+  },
   save(data: Tag[]) {
     localStorage.setItem(localStorageKeyName, JSON.stringify(data));
   }
