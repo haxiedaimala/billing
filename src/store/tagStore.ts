@@ -1,8 +1,19 @@
-import tagListModel from '@/model/tagListModel';
+import createId from '@/lib/createId';
 
-export default {
-  tagList: tagListModel.fetch(),
-  fetchTag: tagListModel.fetch,
+const localStorageKeyName = 'tagList';
+const dataSource = [
+  {id: 1, name: '衣'},
+  {id: 2, name: '食'},
+  {id: 3, name: '住'},
+  {id: 4, name: '行'}
+];
+
+const tagStore = {
+  tagList: [] as Tag[],
+  fetchTag() {
+    this.tagList = JSON.parse(localStorage.getItem(localStorageKeyName) || JSON.stringify(dataSource));
+    return this.tagList;
+  },
   findTag(id: string) {
     return this.tagList.filter(tag => tag.id === id)[0];
   },
@@ -11,22 +22,47 @@ export default {
     if (tagName === '') {
       window.alert('标签名不能为空');
     } else {
-      const message = tagListModel.create(tagName);
-      if (message === 'duplicated') {
+      const names = this.tagList.map(tag => tag.name);
+      if (names.indexOf(tagName) >= 0) {
         window.alert('标签名重复，添加失败');
       } else {
-        tagListModel.save(message);
+        const newTagList: Tag[] = JSON.parse(JSON.stringify(this.tagList));
+        newTagList.push({id: createId().toString(), name: tagName});
+        this.tagList = newTagList;
+        tagStore.save(this.tagList);
         window.alert('创建成功');
-        return message;
+        return this.tagList;
       }
     }
   },
-  removeTag: (id: string) => {
-    return tagListModel.remove(id);
+  removeTag(id: string) {
+    const tag = this.tagList.filter(tag => tag.id === id)[0];
+    const index = this.tagList.indexOf(tag);
+    if (index === -1) {
+      return false;
+    } else {
+      this.tagList.splice(index, 1);
+      tagStore.save(this.tagList);
+      return true;
+    }
   },
-  updateTag: (id: string, name: string) => {
-    const message = tagListModel.update(id, name);
-    if (message === 'not found') return window.alert('找不到该标签');
-    if (message === 'success') return window.alert('修改成功');
+  updateTag(id: string, name: string) {
+    const idList = this.tagList.map(tag => tag.id);
+    if (idList.indexOf(id) >= 0) {
+      const tags = this.tagList.filter(tag => tag.id === id)[0];
+      tags.name = name;
+      tagStore.save(this.tagList);
+      window.alert('修改成功');
+      return 'success';
+    } else {
+      window.alert('找不到该标签');
+      return 'not found';
+    }
+  },
+  save(data: Tag[]) {
+    localStorage.setItem(localStorageKeyName, JSON.stringify(data));
   }
 };
+
+tagStore.fetchTag();
+export default tagStore;

@@ -1,6 +1,19 @@
-import recordListModel from '@/model/recordListModel';
+const localStorageKeyName = 'recordList';
+let data: RecordItem[] = [];
 
-export default {
-  recordList: recordListModel.fetch(),
-  createRecord: (record: RecordItem) => recordListModel.create(record)
+const recordStore = {
+  recordList: data,
+  fetchRecord() {
+    data = JSON.parse(localStorage.getItem(localStorageKeyName) || '[]');
+    return data;
+  },
+  createRecord(record: RecordItem) {
+    data.push(record);
+    this.save();
+  },
+  save() {
+    localStorage.setItem(localStorageKeyName, JSON.stringify(data));
+  }
 };
+recordStore.fetchRecord();
+export default recordStore;
