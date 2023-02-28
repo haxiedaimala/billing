@@ -1,20 +1,15 @@
 <script setup lang="ts">
 import Button from '@/components/Button.vue';
-import tagListModel from '@/model/tagListModel';
 import {ref} from 'vue';
+import store from '@/store/index2';
 
-tagListModel.fetch();
-const tagList = ref(tagListModel.data);
+const tagList = ref(store.fetchTag());
 
 const create = () => {
-  const tagName: string = window.prompt('请输入标签名：')!;
-  if (!tagName) return window.alert('标签名不能为空');
-  const message = tagListModel.create(tagName);
-  if (message === 'duplicated') return window.alert('标签名重复，添加失败');
-  tagList.value = message as Tag[];
-  tagListModel.save(tagList.value);
-  window.alert('创建成功');
-
+  const message = store.createTag();
+  if (message) {
+    tagList.value = message as Tag[];
+  }
 };
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {PropType, reactive} from 'vue';
-import tagListModel from '@/model/tagListModel';
+import store from '@/store/index2';
 
 interface Props {
   tags: string[];
@@ -36,13 +36,8 @@ const toggle = (value: string) => {
   emits('update:selectTags', currentTags);
 };
 const create = () => {
-  const tagName: string = window.prompt('请输入标签名：')!;
-  if (!tagName) return window.alert('标签名不能为空');
-  const message = tagListModel.create(tagName);
-  if (message === 'duplicated') return window.alert('标签名重复，添加失败');
+  const message = store.createTag()!;
   emits('update:modelValue', message);
-  tagListModel.save(message);
-  window.alert('创建成功');
 };
 </script>
 

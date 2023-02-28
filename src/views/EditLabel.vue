@@ -1,26 +1,20 @@
 <script setup lang="ts">
 import {useRoute, useRouter} from 'vue-router';
-import tagListModel from '@/model/tagListModel';
 import FormItem from '@/components/money/FormItem.vue';
 import Button from '@/components/Button.vue';
-import {ref} from 'vue';
+import store from '@/store/index2';
 
-tagListModel.fetch();
 const router = useRouter();
 const route = useRoute();
-const data = ref(tagListModel.data);
-const tag = data.value.filter(tag => tag.id === route.params.id)[0];
+const tag = store.findTag((route.params.id) as string);
 if (!tag) {
   router.replace('/404');
 }
 const update = () => {
-  const message = tagListModel.update(tag.id, tag.name);
-  if (message === 'not found') return window.alert('找不到该标签');
-  if (message === 'success') return window.alert('修改成功');
+  store.updateTag(tag.id, tag.name);
 };
 const remove = () => {
-  const isSuccess = tagListModel.remove(tag.id);
-  if (isSuccess) {
+  if (store.removeTag(tag.id)) {
     window.alert('删除成功');
     goBack();
   } else {

@@ -3,13 +3,11 @@ import Tags from '@/components/money/Tags.vue';
 import FormItem from '@/components/money/FormItem.vue';
 import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
-import recordListModel from '@/model/recordListModel';
-import tagListModel from '@/model/tagListModel';
 import {computed, ref} from 'vue';
+import store from '@/store/index2';
 
-tagListModel.fetch();
-recordListModel.fetch();
-const dataSource = ref(tagListModel.data);
+
+const dataSource = ref(store.fetchTag());
 const type = ref('-');
 const output = ref('0');
 const note = ref('');
@@ -30,7 +28,7 @@ const clearRecord = () => {
   selectTags.value = [];
 };
 const onSaveRecord = () => {
-  recordListModel.create(record.value);
+  store.createRecord(record.value);
   clearRecord();
   window.alert('保存成功');
 };
