@@ -5,7 +5,7 @@ import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import recordListModel from '@/model/recordListModel';
 import tagListModel from '@/model/tagListModel';
-import {computed, ref, watch} from 'vue';
+import {computed, ref} from 'vue';
 
 tagListModel.fetch();
 const dataSource = ref(tagListModel.data);
@@ -22,9 +22,6 @@ const record = computed<RecordItem>(() => {
     account: parseFloat(output.value),
     createAt: new Date()
   };
-});
-watch(dataSource, () => {
-  tagListModel.save(dataSource.value);
 });
 const clearRecord = () => {
   type.value = '-';
