@@ -11,7 +11,7 @@ const type = ref('-');
 <template>
   <Layout>
     <Tabs :data-source="recordTypeList" v-model="type" class-clearfix="type"/>
-    <Tabs :data-source="intervalList" v-model="interval" class-clearfix="statistics"/>
+    <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
   </Layout>
 </template>
 
@@ -27,5 +27,9 @@ const type = ref('-');
       display: none;
     }
   }
+}
+
+:deep(.interval-item) {
+  padding: 8px 0;
 }
 </style>

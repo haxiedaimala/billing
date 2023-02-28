@@ -22,6 +22,7 @@ const classList = (item: DateSource) => {
 <template>
   <ul class="tabs">
     <li v-for="item in dataSource"
+        class="tabs-item"
         :key="item.value"
         @click="toggle(item.value)"
         :class="classList(item)"
@@ -38,7 +39,7 @@ const classList = (item: DateSource) => {
   background: #c4c4c4;
   font-size: 24px;
 
-  li {
+  &-item {
     flex: 1;
     padding: 15px 0;
     display: flex;
