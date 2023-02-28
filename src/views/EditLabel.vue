@@ -3,7 +3,7 @@ import {useRoute, useRouter} from 'vue-router';
 import tagListModel from '@/model/tagListModel';
 import FormItem from '@/components/money/FormItem.vue';
 import Button from '@/components/Button.vue';
-import {ref, watch} from 'vue';
+import {ref} from 'vue';
 
 tagListModel.fetch();
 const router = useRouter();
@@ -13,9 +13,11 @@ const tag = data.value.filter(tag => tag.id === route.params.id)[0];
 if (!tag) {
   router.replace('/404');
 }
-watch(tag, () => {
-  tagListModel.update(tag.id, tag.name);
-});
+const update = () => {
+  const message = tagListModel.update(tag.id, tag.name);
+  if (message === 'not found') return window.alert('找不到该标签');
+  if (message === 'success') return window.alert('修改成功');
+};
 const remove = () => {
   const isSuccess = tagListModel.remove(tag.id);
   if (isSuccess) {
@@ -39,6 +41,7 @@ const goBack = () => {
     <div class="form-wrapper">
       <FormItem v-model="tag.name"
                 field-name="标签名"
+                @change="update"
       />
     </div>
     <div class="button-wrapper">

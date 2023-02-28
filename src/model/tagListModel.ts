@@ -1,20 +1,11 @@
+import createId from '@/lib/createId';
+
 const localStorageKeyName = 'tagList';
 const dataSource = [
-  {
-    id: '衣',
-    name: '衣',
-  },
-  {
-    id: '食',
-    name: '食',
-  },
-  {
-    id: '住',
-    name: '住'
-  },
-  {
-    id: '行', name: '行'
-  }
+  {id: createId(), name: '衣'},
+  {id: createId(), name: '食'},
+  {id: createId(), name: '住'},
+  {id: createId(), name: '行'}
 ];
 
 const tagListModel: TagListModel = {
@@ -29,7 +20,7 @@ const tagListModel: TagListModel = {
       return 'duplicated';
     }
     const newTagList: Tag[] = JSON.parse(JSON.stringify(this.data));
-    newTagList.push({id: tagName, name: tagName});
+    newTagList.push({id: createId().toString(), name: tagName});
     this.data = newTagList;
     return this.data;
   },
