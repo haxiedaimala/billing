@@ -10,7 +10,6 @@ import {computed, ref} from 'vue';
 tagListModel.fetch();
 recordListModel.fetch();
 const dataSource = ref(tagListModel.data);
-const recordList = ref(recordListModel.data);
 const type = ref('-');
 const output = ref('0');
 const note = ref('');
@@ -31,8 +30,7 @@ const clearRecord = () => {
   selectTags.value = [];
 };
 const onSaveRecord = () => {
-  recordList.value.push(record.value);
-  recordListModel.save(recordList.value);
+  recordListModel.create(record.value);
   clearRecord();
   window.alert('保存成功');
 };

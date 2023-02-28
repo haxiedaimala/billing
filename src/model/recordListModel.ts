@@ -5,8 +5,12 @@ const recordListModel = {
     this.data = JSON.parse(localStorage.getItem(localStorageKeyName) || '[]');
     return this.data;
   },
-  save(data: RecordItem[]) {
-    localStorage.setItem(localStorageKeyName, JSON.stringify(data));
+  create(data: RecordItem) {
+    this.data.push(data);
+    this.save();
+  },
+  save() {
+    localStorage.setItem(localStorageKeyName, JSON.stringify(this.data));
   }
 };
 export default recordListModel;
