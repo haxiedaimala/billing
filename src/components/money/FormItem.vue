@@ -10,7 +10,7 @@ defineProps({
   },
   placeholder: {
     type: String
-  }
+  },
 });
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void

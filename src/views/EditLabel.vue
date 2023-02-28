@@ -3,26 +3,26 @@ import {useRoute, useRouter} from 'vue-router';
 import tagListModel from '@/model/tagListModel';
 import FormItem from '@/components/money/FormItem.vue';
 import Button from '@/components/Button.vue';
+import {ref} from 'vue';
 
 tagListModel.fetch();
-const data = tagListModel.data;
-const tag = data.filter(tag => tag.id === useRoute().params.id)[0];
+const data = ref(tagListModel.data);
+const tag = data.value.filter(tag => tag.id === useRoute().params.id)[0];
 if (tag) {
   console.log(tag);
 } else {
   useRouter().replace('/404');
-  console.log('404');
 }
 </script>
 
 <template>
   <Layout>
     <div class="navBar">
-      <Icon class="leftIcon" name="left"/>
+      <Icon class="leftIcon" name="left" />
       <span class="title">编辑标签</span>
     </div>
     <div class="form-wrapper">
-      <FormItem field-name="标签名"/>
+      <FormItem :model-value="tag.name" field-name="标签名"/>
     </div>
     <div class="button-wrapper">
       <Button>删除标签</Button>
