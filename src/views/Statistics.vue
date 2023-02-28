@@ -1,24 +1,16 @@
 <script setup lang="ts">
 import Tabs from '@/components/Tabs.vue';
 import {ref} from 'vue';
+import intervalList from '@/constants/intervalList';
+import recordTypeList from '@/constants/recordTypeList';
 
-
-const intervalList = [
-  {text: '按天', value: 'day'},
-  {text: '按周', value: 'week'},
-  {text: '按月', value: 'month'},
-];
-const typeList = [
-  {text: '支出', value: '-'},
-  {text: '收入', value: '+'}
-];
 const interval = ref('day');
 const type = ref('-');
 </script>
 
 <template>
   <Layout>
-    <Tabs :data-source="typeList" v-model="type" class-clearfix="type"/>
+    <Tabs :data-source="recordTypeList" v-model="type" class-clearfix="type"/>
     <Tabs :data-source="intervalList" v-model="interval" class-clearfix="statistics"/>
   </Layout>
 </template>

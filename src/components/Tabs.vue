@@ -6,7 +6,7 @@ type DateSource = {
 const props = defineProps<{
   dataSource: DateSource[],
   modelValue: string,
-  classClearfix: string
+  classClearfix?: string
 }>();
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void

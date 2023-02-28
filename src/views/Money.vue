@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import Tags from '@/components/money/Tags.vue';
 import FormItem from '@/components/money/FormItem.vue';
-import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import {computed, ref} from 'vue';
 import {useStore} from 'vuex';
+import Tabs from '@/components/Tabs.vue';
+import recordTypeList from '@/constants/recordTypeList';
 
 const store = useStore();
 const dataSource = computed<Tag[]>(() => store.state.tagList);
@@ -21,6 +22,7 @@ const record = computed<RecordItem>(() => {
     createAt: new Date()
   };
 });
+const typeSource = recordTypeList;
 const clearRecord = () => {
   type.value = '-';
   output.value = '0';
@@ -38,7 +40,7 @@ const onSaveRecord = () => {
   <Layout>
     <Tags v-model="dataSource" v-model:selectTags="selectTags"/>
     <FormItem field-name="备注" placeholder="请输入备注" v-model="note"/>
-    <Types v-model="type"/>
+    <Tabs v-model="type" :data-source="typeSource"/>
     <NumberPad v-model="output" @submit="onSaveRecord"/>
   </Layout>
 </template>
