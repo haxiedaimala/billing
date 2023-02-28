@@ -4,10 +4,10 @@ import FormItem from '@/components/money/FormItem.vue';
 import Types from '@/components/money/Types.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import {computed, ref} from 'vue';
-import store from '@/store/index2';
+import {useStore} from 'vuex';
 
-
-const dataSource = ref(store.fetchTag());
+const store = useStore();
+const dataSource = computed<Tag[]>(() => store.state.tagList);
 const type = ref('-');
 const output = ref('0');
 const note = ref('');
@@ -28,7 +28,7 @@ const clearRecord = () => {
   selectTags.value = [];
 };
 const onSaveRecord = () => {
-  store.createRecord(record.value);
+  store.commit('createRecord', record.value);
   clearRecord();
   window.alert('保存成功');
 };

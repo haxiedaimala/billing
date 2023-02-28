@@ -2,24 +2,29 @@
 import {useRoute, useRouter} from 'vue-router';
 import FormItem from '@/components/money/FormItem.vue';
 import Button from '@/components/Button.vue';
-import store from '@/store/index2';
+import {useStore} from 'vuex';
+import {computed} from 'vue';
 
 const router = useRouter();
 const route = useRoute();
-const tag = store.findTag((route.params.id) as string);
+const store = useStore();
+const tagList = computed<Tag[]>(() => store.state.tagList);
+const tag = tagList.value.filter(tag => tag.id === parseInt((route.params.id) as string))[0];
 if (!tag) {
-  router.replace('/404');
+  useRouter().replace('/404');
 }
 const update = () => {
-  store.updateTag(tag.id, tag.name);
+  store.commit('updateTag', {id: tag.id, name: tag.name});
 };
 const remove = () => {
-  if (store.removeTag(tag.id)) {
+  const resolve = () => {
     window.alert('删除成功');
     goBack();
-  } else {
-    window.alert('删除失败');
-  }
+  };
+  const reject = () => window.alert('删除失败');
+  const id = tag.id;
+  store.commit('removeTag', {id, resolve, reject});
+
 };
 const goBack = () => {
   router.back();

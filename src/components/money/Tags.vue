@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import {PropType, reactive} from 'vue';
-import store from '@/store/index2';
+import {useStore} from 'vuex';
 
 interface Props {
   tags: string[];
 }
 
+const store = useStore();
 const props = defineProps({
   modelValue: {
     type: Object as PropType<Props>,
@@ -36,8 +37,7 @@ const toggle = (value: string) => {
   emits('update:selectTags', currentTags);
 };
 const create = () => {
-  const message = store.createTag()!;
-  emits('update:modelValue', message);
+  store.commit('createTag');
 };
 </script>
 
