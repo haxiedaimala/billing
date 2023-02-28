@@ -3,7 +3,7 @@ interface RecordItem {
   note: string,
   type: string,
   account: number,
-  createAt?: Date
+  createAt?: string
 }
 
 interface Tag {

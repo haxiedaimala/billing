@@ -19,7 +19,7 @@ const record = computed<RecordItem>(() => {
     note: note.value,
     type: type.value,
     account: parseFloat(output.value),
-    createAt: new Date()
+    createAt: new Date().toISOString()
   };
 });
 const typeSource = recordTypeList;
