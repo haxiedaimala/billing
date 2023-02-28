@@ -1,9 +1,9 @@
-import {ref} from 'vue';
-
 const localStorageKeyName = 'recordList';
 const recordListModel = {
+  data: [] as RecordItem[],
   fetch() {
-    return ref<RecordItem[]>(JSON.parse(localStorage.getItem(localStorageKeyName) || '[]'));
+    this.data = JSON.parse(localStorage.getItem(localStorageKeyName) || '[]');
+    return this.data;
   },
   save(data: RecordItem[]) {
     localStorage.setItem(localStorageKeyName, JSON.stringify(data));

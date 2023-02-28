@@ -8,8 +8,9 @@ import tagListModel from '@/model/tagListModel';
 import {computed, ref} from 'vue';
 
 tagListModel.fetch();
+recordListModel.fetch();
 const dataSource = ref(tagListModel.data);
-const recordList = recordListModel.fetch();
+const recordList = ref(recordListModel.data);
 const type = ref('-');
 const output = ref('0');
 const note = ref('');
