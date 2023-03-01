@@ -116,11 +116,11 @@ const tagString = (tags: string[]) => {
 
 <style lang="scss" scoped>
 :deep(.type-item) {
-  background-color: #c4c4c4;
+  background-color: #fff;
   border: none;
 
   &.selected {
-    background-color: #fff;
+    background-color: #c4c4c4;
 
     &::after {
       display: none;

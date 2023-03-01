@@ -14,10 +14,12 @@ if (!tag) {
   useRouter().replace('/404');
 }
 const updateTagMap: { [key: string]: string } = {
-  'tag name is not found': '找不到该标签，修改失败'
+  'tag name is not found': '找不到该标签，修改失败',
+  'tag name is duplicated': '标签名已存在，修改失败',
+  'tag name is not null': '标签名不能为空，修改失败'
 };
-const update = () => {
-  store.commit('updateTag', {id: tag.id, name: tag.name});
+const update = ($event: string) => {
+  store.commit('updateTag', {id: tag.id, name: $event});
   if (store.state.updateTagError) {
     window.alert(updateTagMap[store.state.updateTagError.message]);
   } else {
@@ -49,7 +51,7 @@ const goBack = () => {
       <span class="title">编辑标签</span>
     </div>
     <div class="form-wrapper">
-      <FormItem v-model="tag.name"
+      <FormItem :model-value="tag.name"
                 field-name="标签名"
                 @change="update"
       />

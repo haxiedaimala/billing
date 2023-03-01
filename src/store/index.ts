@@ -46,10 +46,19 @@ const store = createStore({
       const {id, name} = obj;
       const idList = state.tagList.map(tag => tag.id);
       if (idList.indexOf(id) >= 0) {
-        const tags = state.tagList.filter(tag => tag.id === id)[0];
-        tags.name = name;
-        store.commit('saveTag');
-        state.updateTagError = null;
+        const names = state.tagList.map(tag => tag.name);
+        if (names.indexOf(name) >= 0) {
+          console.log('names:', names);
+          console.log('name:', name);
+          state.updateTagError = new Error('tag name is duplicated');
+        } else if (name.length===0) {
+          state.updateTagError = new Error('tag name is not null');
+        } else {
+          const tags = state.tagList.filter(tag => tag.id === id)[0];
+          tags.name = name;
+          store.commit('saveTag');
+          state.updateTagError = null;
+        }
       } else {
         state.updateTagError = new Error('tag name is not found');
       }
