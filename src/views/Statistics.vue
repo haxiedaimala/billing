@@ -4,7 +4,23 @@ import {computed, ref} from 'vue';
 import intervalList from '@/constants/intervalList';
 import recordTypeList from '@/constants/recordTypeList';
 import {useStore} from 'vuex';
+import dayjs from 'dayjs';
 
+
+const beautify = (date: string) => {
+  console.log(dayjs(date).isSame(dayjs().subtract(1, 'day')));
+  if (dayjs(date).isSame(dayjs(), 'day')) {
+    return '今天';
+  } else if (dayjs(date).isSame(dayjs().subtract(1, 'day'), 'day')) {
+    return '昨天';
+  } else if (dayjs(date).isSame(dayjs().subtract(2, 'day'), 'day')) {
+    return '前天';
+  } else if (dayjs(date).isSame(dayjs(),'year')) {
+    return dayjs(date).format('M月D日');
+  } else {
+    return date;
+  }
+};
 const store = useStore();
 const interval = ref('day');
 const type = ref('-');
@@ -32,7 +48,7 @@ const tagString = (tags: Tag[]) => {
     <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
     <ol>
       <li v-for="(group,index) in reslut" :key="index">
-        <h3 class="title">{{ group.title }}</h3>
+        <h3 class="title">{{ beautify(group.title) }}</h3>
         <ol>
           <li class="record-item" v-for="(item,index) in group.items" :key="index">
             <span>{{ tagString(item.tags) }}</span>
@@ -78,7 +94,8 @@ const tagString = (tags: Tag[]) => {
   @extend %item;
   background-color: #fff;
 }
-.notes{
+
+.notes {
   margin: 0 auto 0 1em;
   color: #999;
   font-size: 14px;
