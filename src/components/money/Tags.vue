@@ -37,7 +37,10 @@ const toggle = (value: string) => {
   emits('update:selectTags', currentTags);
 };
 const create = () => {
-  store.commit('createTag');
+  const tagName: string = window.prompt('请输入标签名：')!;
+  if (tagName === '') return window.alert('标签名不能为空');
+  if (tagName === null) return;
+  store.commit('createTag', tagName);
 };
 </script>
 

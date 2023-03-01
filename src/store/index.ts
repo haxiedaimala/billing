@@ -1,23 +1,12 @@
 import {createStore} from 'vuex';
 import createId from '@/lib/createId';
 
-const dataSource = [
-  {id: -1, name: '衣'},
-  {id: -2, name: '食'},
-  {id: -3, name: '住'},
-  {id: -4, name: '行'}
-];
 const store = createStore({
   state: {
     recordList: [] as RecordItem[],
     tagList: [] as Tag[]
   },
-  getters: {
-    findTag(state, id: number) {
-      return state.tagList.filter(tag => tag.id === id)[0];
-    },
-
-  },
+  getters: {},
   mutations: {
     fetchRecord(state) {
       state.recordList = JSON.parse(localStorage.getItem('recordList') || '[]');
@@ -32,25 +21,22 @@ const store = createStore({
 
 
     fetchTag(state) {
-      state.tagList = JSON.parse(localStorage.getItem('tagList') || JSON.stringify(dataSource));
-      return state.tagList;
+      state.tagList = JSON.parse(localStorage.getItem('tagList') || '[]');
+      if (state.tagList.length === 0) {
+        store.commit('createTag', '衣');
+        store.commit('createTag', '食');
+        store.commit('createTag', '住');
+        store.commit('createTag', '行');
+      }
     },
-
-    createTag(state) {
-      const tagName: string = window.prompt('请输入标签名：')!;
-      if (tagName === '') {
-        window.alert('标签名不能为空');
-      } else if (tagName === null) {
-        return;
+    createTag(state, name: string) {
+      const names = store.state.tagList.map(tag => tag.name);
+      if (names.indexOf(name) >= 0) {
+        window.alert('标签名重复，添加失败');
       } else {
-        const names = state.tagList.map(tag => tag.name);
-        if (names.indexOf(tagName) >= 0) {
-          window.alert('标签名重复，添加失败');
-        } else {
-          state.tagList.push({id: createId(), name: tagName});
-          store.commit('saveTag');
-          window.alert('创建成功');
-        }
+        state.tagList.push({id: createId(), name: name});
+        store.commit('saveTag');
+        window.alert('已保存');
       }
     },
     updateTag(state, obj: { id: number, name: string }) {
@@ -61,10 +47,8 @@ const store = createStore({
         tags.name = name;
         store.commit('saveTag');
         window.alert('修改成功');
-        return 'success';
       } else {
         window.alert('找不到该标签');
-        return 'not found';
       }
     },
     removeTag(state, obj: { id: number, resolve: () => void, reject: () => void }) {
