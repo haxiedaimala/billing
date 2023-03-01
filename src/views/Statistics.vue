@@ -64,7 +64,7 @@ const reslut = computed(() => {
 
 const yearList = computed(() => {
   let yearGroup: { year: string, list: GroupList[] }[] = [];
-  if (reslut.value===undefined||reslut.value?.length === 0) return;
+  if (reslut.value === undefined || reslut.value?.length === 0) return;
   yearGroup[0] = {year: dayjs(reslut.value![0].title).format('YYYY'), list: [reslut.value![0]]};
   for (let i = 1; i < reslut.value!.length; i++) {
     let last = yearGroup[yearGroup.length - 1];
@@ -88,7 +88,7 @@ const tagString = (tags: string[]) => {
   <Layout>
     <Tabs :data-source="recordTypeList" v-model="type" class-clearfix="type"/>
     <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
-    <ol>
+    <ol v-if="yearList && yearList.length>=0">
       <li v-for="group in yearList" :key="group.year">
         <h3 class="yearTitle" v-if="interval!=='year'">{{ group.year }}</h3>
         <ol>
@@ -108,6 +108,9 @@ const tagString = (tags: string[]) => {
         </ol>
       </li>
     </ol>
+    <div v-else class="noResult">
+      目前没有相关记录
+    </div>
   </Layout>
 </template>
 
@@ -160,5 +163,9 @@ const tagString = (tags: string[]) => {
   align-items: center;
   justify-content: center;
   background-color: darken(#f1f3f4, 10%);
+}
+.noResult{
+  padding: 1em;
+  text-align: center;
 }
 </style>
