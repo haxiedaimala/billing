@@ -8,7 +8,6 @@ import dayjs from 'dayjs';
 
 
 const beautify = (date: string) => {
-  console.log(dayjs(date).isSame(dayjs().subtract(1, 'day')));
   if (dayjs(date).isSame(dayjs(), 'day')) {
     return '今天';
   } else if (dayjs(date).isSame(dayjs().subtract(1, 'day'), 'day')) {
@@ -32,18 +31,23 @@ function clone<T>(data: T): T {
 
 const reslut = computed(() => {
   if (recordList.value.length === 0) return;
-  let groupList: { title: string, items: RecordItem[] }[] = [];
-  const newList = clone(recordList.value).sort((b, a) => dayjs(a.createAt).valueOf() - dayjs(b.createAt).valueOf());
-  groupList[0] = {title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), items: [newList[0]]};
+  let groupList: { title: string, total?: number, items: RecordItem[] }[] = [];
+  const newList = clone(recordList.value)
+      .filter(el => el.type === type.value)
+      .sort((b, a) => dayjs(a.createAt).valueOf() - dayjs(b.createAt).valueOf());
+  groupList[0] = {title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), total: 0, items: [newList[0]]};
   for (let i = 1; i < newList.length; i++) {
     const current = newList[i];
     const last = groupList[groupList.length - 1];
     if (dayjs(last.title).isSame(dayjs(current.createAt), 'day')) {
       last.items.push(current);
     } else {
-      groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), items: [current]});
+      groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
     }
   }
+  groupList.forEach(group => {
+    group.total = group.items.reduce((sum, item) => sum + item.account, 0);
+  });
   return groupList;
 });
 
@@ -55,10 +59,13 @@ const tagString = (tags: Tag[]) => {
 <template>
   <Layout>
     <Tabs :data-source="recordTypeList" v-model="type" class-clearfix="type"/>
-    <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
+    <!--    <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>-->
     <ol>
       <li v-for="(group,index) in reslut" :key="index">
-        <h3 class="title">{{ beautify(group.title) }}</h3>
+        <h3 class="title">
+          <span>{{ beautify(group.title) }}</span>
+          <span>￥{{group.total}}</span>
+        </h3>
         <ol>
           <li class="record-item" v-for="(item,index) in group.items" :key="index">
             <span>{{ tagString(item.tags) }}</span>
@@ -73,11 +80,11 @@ const tagString = (tags: Tag[]) => {
 
 <style lang="scss" scoped>
 :deep(.type-item) {
-  background-color: #fff;
+  background-color: #c4c4c4;
   border: none;
 
   &.selected {
-    background-color: #c4c4c4;
+    background-color: #fff;
 
     &::after {
       display: none;
