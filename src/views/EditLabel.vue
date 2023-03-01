@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {useRoute, useRouter} from 'vue-router';
-import FormItem from '@/components/money/FormItem.vue';
+import FormItem from '@/components/FormItem.vue';
 import Button from '@/components/Button.vue';
 import {useStore} from 'vuex';
 import {computed} from 'vue';

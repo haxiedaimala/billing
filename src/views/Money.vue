@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Tags from '@/components/money/Tags.vue';
-import FormItem from '@/components/money/FormItem.vue';
+import FormItem from '@/components/FormItem.vue';
 import NumberPad from '@/components/money/NumberPad.vue';
 import {computed, ref} from 'vue';
 import {useStore} from 'vuex';

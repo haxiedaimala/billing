@@ -1,22 +1,16 @@
 <script setup lang="ts">
-import {PropType, reactive} from 'vue';
-import {useStore} from 'vuex';
+import {reactive} from 'vue';
 import {createTag} from '@/lib/createTag';
 
-interface Props {
-  tags: string[];
-}
-
-const store = useStore();
 const props = defineProps({
   modelValue: {
-    type: Object as PropType<Props>,
+    type: Array,
     default: () => {
       return ['衣', '食', '住', '行'];
     }
   },
   selectTags: {
-    type: Object as PropType<Props>,
+    type: Array,
     default: () => {
       return [''];
     }
