@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import {PropType, reactive} from 'vue';
 import {useStore} from 'vuex';
+import {createTag} from '@/lib/createTag';
 
 interface Props {
   tags: string[];
@@ -36,12 +37,7 @@ const toggle = (value: string) => {
   }
   emits('update:selectTags', currentTags);
 };
-const create = () => {
-  const tagName: string = window.prompt('请输入标签名：')!;
-  if (tagName === '') return window.alert('标签名不能为空');
-  if (tagName === null) return;
-  store.commit('createTag', tagName);
-};
+const {create} = createTag();
 </script>
 
 <template>
