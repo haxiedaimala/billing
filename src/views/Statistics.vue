@@ -45,6 +45,7 @@ const reslut = computed(() => {
   if (recordList.value.length === 0) return;
   let groupList: GroupList[] = [];
   const newList = sort(recordList.value);
+  if (newList.length === 0) return;
   groupList[0] = {title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), total: 0, items: [newList[0]]};
   for (let i = 1; i < newList.length; i++) {
     const current = newList[i];
@@ -63,7 +64,7 @@ const reslut = computed(() => {
 
 const yearList = computed(() => {
   let yearGroup: { year: string, list: GroupList[] }[] = [];
-  if (reslut.value?.length === 0) return;
+  if (reslut.value===undefined||reslut.value?.length === 0) return;
   yearGroup[0] = {year: dayjs(reslut.value![0].title).format('YYYY'), list: [reslut.value![0]]};
   for (let i = 1; i < reslut.value!.length; i++) {
     let last = yearGroup[yearGroup.length - 1];
@@ -77,7 +78,7 @@ const yearList = computed(() => {
   return yearGroup;
 });
 
-const tagString = (tags: Tag[]) => {
+const tagString = (tags: string[]) => {
   return tags.length === 0 ? '无' : tags.join(',');
 };
 
