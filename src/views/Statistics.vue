@@ -31,11 +31,20 @@ function clone<T>(data: T): T {
 }
 
 const reslut = computed(() => {
-  // const hashTable: { title: string, items: RecordItem[] }[] = [];
-  console.log(recordList.value.map(item => item.createAt));
+  if (recordList.value.length === 0) return;
+  let groupList: { title: string, items: RecordItem[] }[] = [];
   const newList = clone(recordList.value).sort((b, a) => dayjs(a.createAt).valueOf() - dayjs(b.createAt).valueOf());
-  console.log(newList.map(item => item.createAt));
-  return [];
+  groupList[0] = {title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), items: [newList[0]]};
+  for (let i = 1; i < newList.length; i++) {
+    const current = newList[i];
+    const last = groupList[groupList.length - 1];
+    if (dayjs(last.title).isSame(dayjs(current.createAt), 'day')) {
+      last.items.push(current);
+    } else {
+      groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), items: [current]});
+    }
+  }
+  return groupList;
 });
 
 const tagString = (tags: Tag[]) => {
