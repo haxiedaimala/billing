@@ -8,16 +8,28 @@ import dayjs from 'dayjs';
 
 
 const beautify = (date: string) => {
-  if (dayjs(date).isSame(dayjs(), 'day')) {
-    return '今天';
-  } else if (dayjs(date).isSame(dayjs().subtract(1, 'day'), 'day')) {
-    return '昨天';
-  } else if (dayjs(date).isSame(dayjs().subtract(2, 'day'), 'day')) {
-    return '前天';
-  } else if (dayjs(date).isSame(dayjs(), 'year')) {
-    return dayjs(date).format('M月D日');
-  } else {
-    return date;
+  if (interval.value === 'day') {
+    if (dayjs(date).isSame(dayjs(), 'day')) {
+      return '今天';
+    } else if (dayjs(date).isSame(dayjs().subtract(1, 'day'), 'day')) {
+      return '昨天';
+    } else if (dayjs(date).isSame(dayjs().subtract(2, 'day'), 'day')) {
+      return '前天';
+    } else if (dayjs(date).isSame(dayjs(), 'year')) {
+      return dayjs(date).format('M月D日');
+    } else {
+      return date;
+    }
+  }
+  if (interval.value === 'month') {
+    if (dayjs(date).isSame(dayjs(), 'year')) {
+      return dayjs(date).format('M月');
+    } else {
+      return dayjs(date).format('YYYY年M月');
+    }
+  }
+  if (interval.value === 'year') {
+    return dayjs(date).format('YYYY年');
   }
 };
 const store = useStore();
@@ -36,35 +48,72 @@ const reslut = computed(() => {
       .filter(el => el.type === type.value)
       .sort((b, a) => dayjs(a.createAt).valueOf() - dayjs(b.createAt).valueOf());
   groupList[0] = {title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), total: 0, items: [newList[0]]};
-  for (let i = 1; i < newList.length; i++) {
-    const current = newList[i];
-    const last = groupList[groupList.length - 1];
-    if (dayjs(last.title).isSame(dayjs(current.createAt), 'day')) {
-      last.items.push(current);
-    } else {
-      groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
+
+  if (interval.value === 'day') {
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = groupList[groupList.length - 1];
+      console.log(interval.value);
+      if (dayjs(last.title).isSame(dayjs(current.createAt), 'day')) {
+        last.items.push(current);
+      } else {
+        groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
+      }
     }
+    groupList.forEach(group => {
+      group.total = group.items.reduce((sum, item) => sum + item.account, 0);
+    });
+    console.log(groupList);
   }
-  groupList.forEach(group => {
-    group.total = group.items.reduce((sum, item) => sum + item.account, 0);
-  });
+
+  if (interval.value === 'month') {
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = groupList[groupList.length - 1];
+      if (dayjs(last.title).isSame(dayjs(current.createAt), 'month')) {
+        last.items.push(current);
+      } else {
+        groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
+      }
+    }
+    groupList.forEach(group => {
+      group.total = group.items.reduce((sum, item) => sum + item.account, 0);
+    });
+    console.log(groupList);
+  }
+  if (interval.value === 'year') {
+    for (let i = 1; i < newList.length; i++) {
+      const current = newList[i];
+      const last = groupList[groupList.length - 1];
+      if (dayjs(last.title).isSame(dayjs(current.createAt), 'year')) {
+        last.items.push(current);
+      } else {
+        groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
+      }
+    }
+    groupList.forEach(group => {
+      group.total = group.items.reduce((sum, item) => sum + item.account, 0);
+    });
+    console.log(groupList);
+  }
   return groupList;
 });
 
 const tagString = (tags: Tag[]) => {
   return tags.length === 0 ? '无' : tags.join(',');
 };
+
 </script>
 
 <template>
   <Layout>
     <Tabs :data-source="recordTypeList" v-model="type" class-clearfix="type"/>
-    <!--    <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>-->
+    <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
     <ol>
       <li v-for="(group,index) in reslut" :key="index">
         <h3 class="title">
           <span>{{ beautify(group.title) }}</span>
-          <span>￥{{group.total}}</span>
+          <span>￥{{ group.total }}</span>
         </h3>
         <ol>
           <li class="record-item" v-for="(item,index) in group.items" :key="index">
