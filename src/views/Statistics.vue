@@ -4,7 +4,7 @@ import {computed, ref} from 'vue';
 import intervalList from '@/constants/intervalList';
 import recordTypeList from '@/constants/recordTypeList';
 import {useStore} from 'vuex';
-import dayjs from 'dayjs';
+import dayjs, {OpUnitType} from 'dayjs';
 
 
 const beautify = (date: string) => {
@@ -48,54 +48,18 @@ const reslut = computed(() => {
       .filter(el => el.type === type.value)
       .sort((b, a) => dayjs(a.createAt).valueOf() - dayjs(b.createAt).valueOf());
   groupList[0] = {title: dayjs(newList[0].createAt).format('YYYY-MM-DD'), total: 0, items: [newList[0]]};
-
-  if (interval.value === 'day') {
-    for (let i = 1; i < newList.length; i++) {
-      const current = newList[i];
-      const last = groupList[groupList.length - 1];
-      console.log(interval.value);
-      if (dayjs(last.title).isSame(dayjs(current.createAt), 'day')) {
-        last.items.push(current);
-      } else {
-        groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
-      }
+  for (let i = 1; i < newList.length; i++) {
+    const current = newList[i];
+    const last = groupList[groupList.length - 1];
+    if (dayjs(last.title).isSame(dayjs(current.createAt), `${interval.value}` as OpUnitType)) {
+      last.items.push(current);
+    } else {
+      groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
     }
-    groupList.forEach(group => {
-      group.total = group.items.reduce((sum, item) => sum + item.account, 0);
-    });
-    console.log(groupList);
   }
-
-  if (interval.value === 'month') {
-    for (let i = 1; i < newList.length; i++) {
-      const current = newList[i];
-      const last = groupList[groupList.length - 1];
-      if (dayjs(last.title).isSame(dayjs(current.createAt), 'month')) {
-        last.items.push(current);
-      } else {
-        groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
-      }
-    }
-    groupList.forEach(group => {
-      group.total = group.items.reduce((sum, item) => sum + item.account, 0);
-    });
-    console.log(groupList);
-  }
-  if (interval.value === 'year') {
-    for (let i = 1; i < newList.length; i++) {
-      const current = newList[i];
-      const last = groupList[groupList.length - 1];
-      if (dayjs(last.title).isSame(dayjs(current.createAt), 'year')) {
-        last.items.push(current);
-      } else {
-        groupList.push({title: dayjs(current.createAt).format('YYYY-MM-DD'), total: 0, items: [current]});
-      }
-    }
-    groupList.forEach(group => {
-      group.total = group.items.reduce((sum, item) => sum + item.account, 0);
-    });
-    console.log(groupList);
-  }
+  groupList.forEach(group => {
+    group.total = group.items.reduce((sum, item) => sum + item.account, 0);
+  });
   return groupList;
 });
 
