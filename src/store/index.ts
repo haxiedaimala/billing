@@ -4,7 +4,8 @@ import createId from '@/lib/createId';
 const store = createStore({
   state: {
     recordList: [] as RecordItem[],
-    tagList: [] as Tag[]
+    tagList: [] as Tag[],
+    createTagError: null as Error | null
   },
   getters: {},
   mutations: {
@@ -32,11 +33,11 @@ const store = createStore({
     createTag(state, name: string) {
       const names = store.state.tagList.map(tag => tag.name);
       if (names.indexOf(name) >= 0) {
-        window.alert('标签名重复，添加失败');
+        store.state.createTagError = new Error('tag name duplicated');
       } else {
         state.tagList.push({id: createId(), name: name});
         store.commit('saveTag');
-        window.alert('已保存');
+        store.state.createTagError = null;
       }
     },
     updateTag(state, obj: { id: number, name: string }) {
