@@ -13,17 +13,28 @@ const tag = tagList.value.filter(tag => tag.id === parseInt((route.params.id) as
 if (!tag) {
   useRouter().replace('/404');
 }
+const updateTagMap: { [key: string]: string } = {
+  'tag name is not found': '找不到该标签，修改失败'
+};
 const update = () => {
   store.commit('updateTag', {id: tag.id, name: tag.name});
+  if (store.state.updateTagError) {
+    window.alert(updateTagMap[store.state.updateTagError.message]);
+  } else {
+    window.alert('修改成功');
+  }
+};
+const removeTagMap: { [key: string]: string } = {
+  'tag name is not found': '删除失败'
 };
 const remove = () => {
-  const resolve = () => {
+  store.commit('removeTag', tag.id);
+  if (store.state.removeTagError) {
+    window.alert(removeTagMap[store.state.removeTagError.message]);
+  } else {
     window.alert('删除成功');
     goBack();
-  };
-  const reject = () => window.alert('删除失败');
-  const id = tag.id;
-  store.commit('removeTag', {id, resolve, reject});
+  }
 
 };
 const goBack = () => {

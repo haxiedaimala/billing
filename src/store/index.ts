@@ -5,7 +5,9 @@ const store = createStore({
   state: {
     recordList: [] as RecordItem[],
     tagList: [] as Tag[],
-    createTagError: null as Error | null
+    createTagError: null as Error | null,
+    updateTagError: null as Error | null,
+    removeTagError: null as Error | null,
   },
   getters: {},
   mutations: {
@@ -31,13 +33,13 @@ const store = createStore({
       }
     },
     createTag(state, name: string) {
-      const names = store.state.tagList.map(tag => tag.name);
+      const names = state.tagList.map(tag => tag.name);
       if (names.indexOf(name) >= 0) {
-        store.state.createTagError = new Error('tag name duplicated');
+        state.createTagError = new Error('tag name duplicated');
       } else {
         state.tagList.push({id: createId(), name: name});
         store.commit('saveTag');
-        store.state.createTagError = null;
+        state.createTagError = null;
       }
     },
     updateTag(state, obj: { id: number, name: string }) {
@@ -47,21 +49,20 @@ const store = createStore({
         const tags = state.tagList.filter(tag => tag.id === id)[0];
         tags.name = name;
         store.commit('saveTag');
-        window.alert('修改成功');
+        state.updateTagError = null;
       } else {
-        window.alert('找不到该标签');
+        state.updateTagError = new Error('tag name is not found');
       }
     },
-    removeTag(state, obj: { id: number, resolve: () => void, reject: () => void }) {
-      const {id, resolve, reject} = obj;
+    removeTag(state, id: number) {
       const tag = state.tagList.filter(tag => tag.id === id)[0];
       const index = state.tagList.indexOf(tag);
       if (index === -1) {
-        reject();
+        state.removeTagError = new Error('tag name is not found');
       } else {
         state.tagList.splice(index, 1);
         store.commit('saveTag', this.tagList);
-        resolve();
+        state.removeTagError = null;
       }
     },
     saveTag(state) {
