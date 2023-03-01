@@ -15,7 +15,7 @@ const beautify = (date: string) => {
     return '昨天';
   } else if (dayjs(date).isSame(dayjs().subtract(2, 'day'), 'day')) {
     return '前天';
-  } else if (dayjs(date).isSame(dayjs(),'year')) {
+  } else if (dayjs(date).isSame(dayjs(), 'year')) {
     return dayjs(date).format('M月D日');
   } else {
     return date;
@@ -24,17 +24,18 @@ const beautify = (date: string) => {
 const store = useStore();
 const interval = ref('day');
 const type = ref('-');
-const recordList = computed(() => store.state.recordList);
+const recordList = computed<RecordItem[]>(() => store.state.recordList);
 
-type hashTableValue = { title: string, items: RecordItem[] }
+function clone<T>(data: T): T {
+  return JSON.parse(JSON.stringify(data));
+}
+
 const reslut = computed(() => {
-  const hashTable: { [key: string]: hashTableValue } = {};
-  for (let i = 0; i < recordList.value.length; i++) {
-    const [data,] = recordList.value[i].createAt.split('T');
-    hashTable[data] = hashTable[data] || {title: data, items: []};
-    hashTable[data].items.push(recordList.value[i]);
-  }
-  return hashTable;
+  // const hashTable: { title: string, items: RecordItem[] }[] = [];
+  console.log(recordList.value.map(item => item.createAt));
+  const newList = clone(recordList.value).sort((b, a) => dayjs(a.createAt).valueOf() - dayjs(b.createAt).valueOf());
+  console.log(newList.map(item => item.createAt));
+  return [];
 });
 
 const tagString = (tags: Tag[]) => {
