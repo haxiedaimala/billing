@@ -1,5 +1,5 @@
 interface RecordItem {
-  tags: string[],
+  tags: Tag[],
   note: string,
   type: string,
   account: number,

@@ -1,17 +1,47 @@
 <script setup lang="ts">
 import Tabs from '@/components/Tabs.vue';
-import {ref} from 'vue';
+import {computed, ref} from 'vue';
 import intervalList from '@/constants/intervalList';
 import recordTypeList from '@/constants/recordTypeList';
+import {useStore} from 'vuex';
 
+const store = useStore();
 const interval = ref('day');
 const type = ref('-');
+const recordList = computed(() => store.state.recordList);
+
+type hashTableValue = { title: string, items: RecordItem[] }
+const reslut = computed(() => {
+  const hashTable: { [key: string]: hashTableValue } = {};
+  for (let i = 0; i < recordList.value.length; i++) {
+    const [data,] = recordList.value[i].createAt.split('T');
+    hashTable[data] = hashTable[data] || {title: data, items: []};
+    hashTable[data].items.push(recordList.value[i]);
+  }
+  return hashTable;
+});
+
+const tagString = (tags: Tag[]) => {
+  return tags.length === 0 ? '无' : tags.join(',');
+};
 </script>
 
 <template>
   <Layout>
     <Tabs :data-source="recordTypeList" v-model="type" class-clearfix="type"/>
     <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
+    <ol>
+      <li v-for="(group,index) in reslut" :key="index">
+        <h3 class="title">{{ group.title }}</h3>
+        <ol>
+          <li class="record-item" v-for="(item,index) in group.items" :key="index">
+            <span>{{ tagString(item.tags) }}</span>
+            <span class="notes">{{ item.note }}</span>
+            <span>￥{{ item.account }}</span>
+          </li>
+        </ol>
+      </li>
+    </ol>
   </Layout>
 </template>
 
@@ -31,5 +61,29 @@ const type = ref('-');
 
 :deep(.interval-item) {
   padding: 8px 0;
+}
+
+%item {
+  padding: .6em 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.title {
+  @extend %item
+}
+
+.record-item {
+  @extend %item;
+  background-color: #fff;
+}
+.notes{
+  margin: 0 auto 0 1em;
+  color: #999;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
