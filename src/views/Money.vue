@@ -34,6 +34,16 @@ const onSaveRecord = () => {
   clearRecord();
   window.alert('保存成功');
 };
+const h = document.documentElement.clientHeight;
+const isShow = ref(true);
+window.addEventListener('resize', () => {
+  if (document.documentElement.clientHeight < h) {
+    isShow.value = false;
+  } else {
+    console.log(1);
+    isShow.value = true;
+  }
+});
 </script>
 
 <template>
@@ -41,7 +51,7 @@ const onSaveRecord = () => {
     <Tags v-model="dataSource" v-model:selectTags="selectTags"/>
     <FormItem field-name="备注" placeholder="请输入备注" v-model="note"/>
     <Tabs v-model="type" :data-source="typeSource"/>
-    <NumberPad v-model="output" @submit="onSaveRecord"/>
+    <NumberPad v-model="output" @submit="onSaveRecord" v-show="isShow"/>
   </Layout>
 </template>
 
