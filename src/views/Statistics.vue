@@ -34,7 +34,7 @@ const chartWrapper = ref<HTMLDivElement>();
 
 onMounted(() => {
   if (!chartWrapper.value) return;
-  chartWrapper.value.scrollLeft = 9999;
+  chartWrapper.value.scrollLeft = chartWrapper.value.scrollWidth;
 });
 
 function clone<T>(data: T): T {
@@ -175,6 +175,7 @@ const tagString = (tags: string[]) => {
   justify-content: center;
   background-color: darken(#f1f3f4, 10%);
 }
+
 .noResult {
   padding: 1em;
   text-align: center;
