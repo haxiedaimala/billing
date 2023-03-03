@@ -88,6 +88,20 @@ const tagString = (tags: string[]) => {
   return tags.length === 0 ? '无' : tags.join(',');
 };
 
+const chartDataSource = computed(() => {
+  const array: { key: string, value: number }[] = [];
+  const today = !reslut.value ? dayjs().format('YYYY-MM-DD') : dayjs(reslut.value[0].title).format('YYYY-MM-DD');
+  for (let i = 0; i <= 29; i++) {
+    const date = dayjs(today).subtract(i, 'day').format('YYYY-MM-DD');
+    const amount = reslut.value?.filter(item => {
+      return dayjs(item.title).isSame(date, 'day');
+    })[0]?.total || 0;
+    array.push({key: date, value: amount});
+  }
+  array.sort((a, b) => dayjs(a.key).valueOf() - dayjs(b.key).valueOf());
+  return array;
+});
+
 </script>
 
 <template>
@@ -96,7 +110,7 @@ const tagString = (tags: string[]) => {
     <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
     <template v-if="yearList && yearList.length>=0">
       <div class="chart-wrapper" ref="chartWrapper">
-        <ECharts class="chart"/>
+        <ECharts class="chart" :data-source="chartDataSource"/>
       </div>
       <ol>
         <li v-for="group in yearList" :key="group.year">
