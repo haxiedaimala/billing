@@ -20,6 +20,11 @@ watchPostEffect(() => {
     xAxis: {
       type: 'category',
       data: props.dataSource.map(item => item.key),
+      axisLabel: {
+        formatter: function (value: string) {
+          return value.substring(5);
+        }
+      },
       axisTick: {
         show: true,
         alignWithLabel: true
