@@ -2,14 +2,14 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 //@ts-ignore
 import * as echarts from 'echarts';
-import {onMounted, ref} from 'vue';
+import {ref, watchPostEffect} from 'vue';
 
 type EChartsOption = echarts.EChartsOption;
 const props = defineProps<{
   dataSource: { key: string, value: number }[]
 }>();
 const chartDom = ref<HTMLDivElement>();
-onMounted(() => {
+watchPostEffect(() => {
   if (chartDom.value === undefined) return;
   const myChart = echarts.init(chartDom.value);
   let option: EChartsOption = {
