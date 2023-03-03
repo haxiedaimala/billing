@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import dayjs from 'dayjs';
+
 defineProps({
   modelValue: {
     type: String,
@@ -11,6 +13,10 @@ defineProps({
   placeholder: {
     type: String
   },
+  type: {
+    type: String,
+    default: 'text'
+  }
 });
 const emits = defineEmits<{
   (e: 'update:modelValue', value: string): void,
@@ -22,12 +28,20 @@ const changNote = (event: Event) => {
 const change = (event: Event) => {
   emits('change', (event.target as HTMLInputElement).value);
 };
+const dateBeauty = (isoString: string) => {
+  return dayjs(isoString).format('YYYY-MM-DD');
+};
 </script>
 
 <template>
   <label class="formItem">
     <span class="name">{{ fieldName }}</span>
-    <input type="text" :placeholder="placeholder" :value="modelValue" @input="changNote" @change="change">
+    <template v-if="type==='date'">
+      <input :type="type" :placeholder="placeholder" :value="dateBeauty(modelValue)" @input="changNote" @change="change">
+    </template>
+    <template v-else>
+      <input :type="type" :placeholder="placeholder" :value="modelValue" @input="changNote" @change="change">
+    </template>
   </label>
 </template>
 

@@ -12,6 +12,7 @@ const dataSource = computed<Tag[]>(() => store.state.tagList);
 const type = ref('-');
 const output = ref('0');
 const note = ref('');
+const createAt = ref(new Date().toISOString());
 const selectTags = ref<string[]>([]);
 const record = computed<RecordItem>(() => {
   return {
@@ -19,7 +20,7 @@ const record = computed<RecordItem>(() => {
     note: note.value,
     type: type.value,
     account: parseFloat(output.value),
-    createAt: new Date().toISOString()
+    createAt: createAt.value
   };
 });
 const typeSource = recordTypeList;
@@ -28,6 +29,7 @@ const clearRecord = () => {
   output.value = '0';
   note.value = '';
   selectTags.value = [];
+  createAt.value = new Date().toISOString();
 };
 const onSaveRecord = () => {
   store.commit('createRecord', record.value);
@@ -40,6 +42,7 @@ const onSaveRecord = () => {
   <Layout>
     <Tags v-model="dataSource" v-model:selectTags="selectTags"/>
     <FormItem field-name="备注" placeholder="请输入备注" v-model="note"/>
+    <FormItem type="date" field-name="时间" placeholder="请输入时间" v-model="createAt"/>
     <Tabs v-model="type" :data-source="typeSource"/>
     <NumberPad v-model="output" @submit="onSaveRecord"/>
   </Layout>
