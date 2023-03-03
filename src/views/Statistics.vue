@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Tabs from '@/components/Tabs.vue';
-import {computed, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import intervalList from '@/constants/intervalList';
 import recordTypeList from '@/constants/recordTypeList';
 import {useStore} from 'vuex';
@@ -30,6 +30,12 @@ const store = useStore();
 const interval = ref('day');
 const type = ref('-');
 const recordList = computed<RecordItem[]>(() => store.state.recordList);
+const chartWrapper = ref<HTMLDivElement>();
+
+onMounted(() => {
+  if (!chartWrapper.value) return;
+  chartWrapper.value.scrollLeft = 9999;
+});
 
 function clone<T>(data: T): T {
   return JSON.parse(JSON.stringify(data));
@@ -169,8 +175,20 @@ const tagString = (tags: string[]) => {
   justify-content: center;
   background-color: darken(#f1f3f4, 10%);
 }
-.noResult{
+.noResult {
   padding: 1em;
   text-align: center;
+}
+
+.chart {
+  width: 430%;
+
+  &-wrapper {
+    overflow: auto;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 </style>
