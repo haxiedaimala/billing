@@ -5,7 +5,7 @@ import intervalList from '@/constants/intervalList';
 import recordTypeList from '@/constants/recordTypeList';
 import {useStore} from 'vuex';
 import dayjs, {OpUnitType} from 'dayjs';
-
+import ECharts from '@/components/ECharts.vue';
 
 const beautify = (date: string) => {
   if (interval.value === 'day') {
@@ -88,26 +88,31 @@ const tagString = (tags: string[]) => {
   <Layout>
     <Tabs :data-source="recordTypeList" v-model="type" class-clearfix="type"/>
     <Tabs :data-source="intervalList" v-model="interval" class-clearfix="interval"/>
-    <ol v-if="yearList && yearList.length>=0">
-      <li v-for="group in yearList" :key="group.year">
-        <h3 class="yearTitle" v-if="interval!=='year'">{{ group.year }}</h3>
-        <ol>
-          <li v-for="(groupItem,index) in group.list" :key="index">
-            <h3 class="title">
-              <span>{{ beautify(groupItem.title) }}</span>
-              <span>￥{{ groupItem.total }}</span>
-            </h3>
-            <ol>
-              <li class="record-item" v-for="(item,index) in groupItem.items" :key="index">
-                <span>{{ tagString(item.tags) }}</span>
-                <span class="notes">{{ item.note }}</span>
-                <span>￥{{ item.account }}</span>
-              </li>
-            </ol>
-          </li>
-        </ol>
-      </li>
-    </ol>
+    <template v-if="yearList && yearList.length>=0">
+      <div class="chart-wrapper" ref="chartWrapper">
+        <ECharts class="chart"/>
+      </div>
+      <ol>
+        <li v-for="group in yearList" :key="group.year">
+          <h3 class="yearTitle" v-if="interval!=='year'">{{ group.year }}</h3>
+          <ol>
+            <li v-for="(groupItem,index) in group.list" :key="index">
+              <h3 class="title">
+                <span>{{ beautify(groupItem.title) }}</span>
+                <span>￥{{ groupItem.total }}</span>
+              </h3>
+              <ol>
+                <li class="record-item" v-for="(item,index) in groupItem.items" :key="index">
+                  <span>{{ tagString(item.tags) }}</span>
+                  <span class="notes">{{ item.note }}</span>
+                  <span>￥{{ item.account }}</span>
+                </li>
+              </ol>
+            </li>
+          </ol>
+        </li>
+      </ol>
+    </template>
     <div v-else class="noResult">
       目前没有相关记录
     </div>
